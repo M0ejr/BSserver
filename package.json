@@ -1,7 +1,6 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js"
@@ -20,5 +19,6 @@
     "knex": "^3.0.1",
     "nodemon": "^3.0.1",
     "pg": "^8.11.3"
-  }
+  },
+  "description": ""
 }

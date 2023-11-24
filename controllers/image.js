@@ -1,3 +1,5 @@
+const fetch = require("node-fetch");
+
 const returnClarifaiRequestOptions = (imageUrl) => {
   const PAT = "1688182ed34d4c109fd1258085461dbe";
   const USER_ID = "moejr";
@@ -46,7 +48,7 @@ const handleApiCall = (req, res) => {
     })
     .catch((err) => {
       console.error("Error calling Clarifai API:", err);
-      res.status(400).json("Unable to work with API");
+      res.status(500).json({ error: "Internal Server Error" });
     });
 };
 

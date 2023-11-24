@@ -64,17 +64,16 @@
 //   handleApiCall,
 // };
 
-
 // Import necessary modules
-const express = require('express');
-require('isomorphic-fetch');
+const express = require("express");
+require("isomorphic-fetch");
 
 // Create an Express application
 const app = express();
 app.use(express.json());
 
 // Your Clarifai API key
-const PAT = '1688182ed34d4c109fd1258085461dbe';
+const PAT = "1688182ed34d4c109fd1258085461dbe";
 
 // Function to return Clarifai request options
 const returnClarifaiRequestOptions = (imageUrl) => {
@@ -104,7 +103,7 @@ const returnClarifaiRequestOptions = (imageUrl) => {
     headers: {
       Accept: "application/json",
       Authorization: "Key " + PAT,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: raw,
   };
@@ -113,32 +112,33 @@ const returnClarifaiRequestOptions = (imageUrl) => {
 };
 
 // Route to handle Clarifai API call
-const handleApiCall = (req, res) => {
+const handleApiCall = async (req, res) => {
   const { input } = req.body;
 
-  if (!input) {
-    return res.status(400).json('Input URL is required');
+  try {
+    if (!input) {
+      throw new Error("Input URL is required");
+    }
+
+    const clarifaiOptions = returnClarifaiRequestOptions(input);
+
+    const response = await fetch(
+      `https://api.clarifai.com/v2/models/${MODEL_ID}/versions/latest/outputs`,
+      clarifaiOptions
+    );
+
+    if (!response.ok) {
+      throw new Error(`Clarifai API request failed: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log("Clarifai API response:", data);
+    res.json(data);
+  } catch (error) {
+    console.error("Error in handleApiCall:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-
-  const clarifaiOptions = returnClarifaiRequestOptions(input);
-
-  fetch(`https://api.clarifai.com/v2/models/${MODEL_ID}/versions/latest/outputs`, clarifaiOptions)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Clarifai API request failed: ' + response.statusText);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Clarifai API response:', data);
-      res.json(data);
-    })
-    .catch(err => {
-      console.error('Fetch error:', err);
-      res.status(500).json('Internal Server Error: ' + err.message);
-    });
 };
-
 
 // Your handleImage function
 const handleImage = (req, res, db) => {

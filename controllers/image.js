@@ -1,5 +1,5 @@
 const returnClarifaiRequestOptions = (imageUrl) => {
-  const PAT = process.env.Clarifai.PAT;
+  const PAT = '1688182ed34d4c109fd1258085461dbe';
   const USER_ID = "moejr";
   const APP_ID = "smartbrain";
   // eslint-disable-next-line
@@ -49,7 +49,7 @@ const handleApiCall = (req, res) => {
 
 
 
-const handleImage = (db) => (req, res) => {
+const handleImage = (req, res, db) => {
   const { id } = req.body;
   db("users")
     .where("id", "=", id)

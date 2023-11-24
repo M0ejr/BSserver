@@ -34,10 +34,10 @@ app.get('/', (req, res)=> { res.send(`it is working`) })
 app.post("/signin", signin.handleSignin(db, bcrypt));
 app.post('/register', register.handleRegister(db, bcrypt))    
 app.get("/profile/:id", profile.handleProfileGet(db));
-app.put("/image", image.handleImage(db));
-app.post("/imageurl", (req, res) => { image.handleApiCall(req, res)});
+app.put('/image', (req, res) => { image.handleImage(req, res, db)})
+app.post('/imageurl', (req, res) => { image.handleApiCall(req, res)})
 
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`app is running on port ${process.env.PORT}`);
+app.listen( 5000, () => {
+  console.log(`app is running on port `);
 });

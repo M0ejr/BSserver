@@ -68,6 +68,9 @@
 const express = require("express");
 require("isomorphic-fetch");
 
+// Define MODEL_ID as a constant
+const MODEL_ID = "face-detection";
+
 // Create an Express application
 const app = express();
 app.use(express.json());
@@ -79,7 +82,6 @@ const PAT = "1688182ed34d4c109fd1258085461dbe";
 const returnClarifaiRequestOptions = (imageUrl) => {
   const USER_ID = "moejr";
   const APP_ID = "smartbrain";
-  const MODEL_ID = "face-detection";
   const IMAGE_URL = imageUrl;
 
   const raw = JSON.stringify({
@@ -113,9 +115,9 @@ const returnClarifaiRequestOptions = (imageUrl) => {
 
 // Route to handle Clarifai API call
 const handleApiCall = async (req, res) => {
-  const { input } = req.body;
-
   try {
+    const { input } = req.body;
+
     if (!input) {
       throw new Error("Input URL is required");
     }

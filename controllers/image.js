@@ -1,6 +1,6 @@
-const fetch = require("node-fetch");
+import fetch from 'node-fetch';
 
-const returnClarifaiRequestOptions = (imageUrl) => {
+export const returnClarifaiRequestOptions = (imageUrl) => {
   const PAT = "1688182ed34d4c109fd1258085461dbe";
   const USER_ID = "moejr";
   const APP_ID = "smartbrain";
@@ -35,7 +35,7 @@ const returnClarifaiRequestOptions = (imageUrl) => {
   return requestOptions;
 };
 
-const handleApiCall = (req, res) => {
+export const handleApiCall = (req, res) => {
   const requestOptions = returnClarifaiRequestOptions(req.body.input);
 
   fetch(
@@ -53,7 +53,7 @@ const handleApiCall = (req, res) => {
 };
 
 // Your handleImage function
-const handleImage = (req, res, db) => {
+export const handleImage = (req, res, db) => {
   const { id } = req.body;
   db("users")
     .where("id", "=", id)
@@ -63,9 +63,4 @@ const handleImage = (req, res, db) => {
       res.json(entries[0].entries);
     })
     .catch((err) => res.status(400).json("unable to get entries"));
-};
-
-module.exports = {
-  handleApiCall,
-  handleImage,
 };

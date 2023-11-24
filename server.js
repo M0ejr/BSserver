@@ -1,12 +1,12 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const cors = require("cors");
-const knex = require("knex");
+import express from "express";
+import bcrypt from "bcrypt";
+import cors from "cors";
+import knex from "knex";
 
-const register = require("./controllers/register");
-const signin = require("./controllers/signin");
-const profile = require("./controllers/profile");
-const { handleApiCall, handleImage } = require("./controllers/image");
+import { handleRegister } from "./controllers/register.js";
+import { handleSignin } from "./controllers/signin.js";
+import { handleProfileGet } from "./controllers/profile.js";
+import { handleApiCall, handleImage } from "./controllers/image.js";
 
 const db = knex({
   client: "pg",
@@ -24,8 +24,8 @@ const db = knex({
 const app = express();
 
 const corsOptions = {
-  origin: 'https://brainscape-o01p.onrender.com', // Replace with your Render URL
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  origin: "https://brainscape-o01p.onrender.com", // Replace with your Render URL
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
 };
@@ -37,12 +37,12 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send(db.users);
 });
-app.post("/signin", signin.handleSignin(db, bcrypt));
+app.post("/signin", handleSignin(db, bcrypt));
 app.post("/register", (req, res) => {
-  register.handleRegister(req, res, db, bcrypt);
+  handleRegister(req, res, db, bcrypt);
 });
 app.get("/profile/:id", (req, res) => {
-  profile.handleProfileGet(req, res, db);
+  handleProfileGet(req, res, db);
 });
 app.put("/image", (req, res) => {
   handleImage(req, res, db);

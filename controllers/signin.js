@@ -24,6 +24,4 @@ const handleSignin = (db, bcrypt) => (req, res) => {
     .catch((err) => res.alert("Wrong email or password"));
 };
 
-module.exports = {
-  handleSignin: handleSignin,
-};
+export { handleSignin };

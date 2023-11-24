@@ -2,7 +2,6 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
 const knex = require("knex");
-const bodyParser = require("body-parser");
 
 const register = require("./controllers/register");
 const signin = require("./controllers/signin");
@@ -24,8 +23,15 @@ const db = knex({
 
 const app = express();
 
+const corsOptions = {
+  origin: "https://brainscape-o01p.onrender.com/", // Update with your frontend's URL
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cors());
 
 app.get("/", (req, res) => {
   res.send(db.users);
@@ -44,6 +50,8 @@ app.post("/imageurl", (req, res) => {
   handleApiCall(req, res);
 });
 
-app.listen(5000, () => {
-  console.log("app is running on port 5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`App is running on port ${PORT}`);
 });

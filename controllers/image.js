@@ -128,7 +128,9 @@ const handleApiCall = async (req, res) => {
     );
 
     if (!response.ok) {
-      throw new Error(`Clarifai API request failed: ${response.statusText}`);
+      const errorMessage = `Clarifai API request failed: ${response.statusText}`;
+      console.error(errorMessage);
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();

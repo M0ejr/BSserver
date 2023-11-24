@@ -35,20 +35,33 @@ const returnClarifaiRequestOptions = (imageUrl) => {
 };
 
 const handleApiCall = (req, res) => {
-  Promise.resolve(returnClarifaiRequestOptions(req.body.input))
-    .then((data) => {
-      fetch(
-        "https://api.clarifai.com/v2/models/" + "face-detection" + "/outputs",
-        data
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          res.json(data);
-        })
-        .catch((err) => res.status(400).json("unable to work with API"));
+  const clarifaiOptions = returnClarifaiRequestOptions(req.body.input);
+
+  fetch("https://api.clarifai.com/v2/models/face-detection/outputs", clarifaiOptions)
+    .then((response) => {
+      console.log('Clarifai API Response Status:', response.status);
+      // Print response body for additional details
+      return response.text();
     })
-    .catch((err) => res.status(400).json("unable to work with API"));
+    .then((data) => {
+      console.log('Clarifai API Response Data:', data);
+      // Attempt to parse response body as JSON
+      try {
+        const jsonData = JSON.parse(data);
+        res.json(jsonData);
+      } catch (parseError) {
+        // If parsing fails, send raw response text
+        res.status(400).send(data);
+      }
+    })
+    .catch((err) => {
+      console.error('Error in handleApiCall:', err);
+      res.status(400).json('Unable to work with API');
+    });
 };
+
+
+
 
 // Your handleImage function
 const handleImage = (req, res, db) => {

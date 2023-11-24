@@ -30,7 +30,7 @@ app.use(cors());
 app.use(express.json());
 
 
-app.get('/', (req, res)=> { res.send(db.users) })
+app.get('/', (req, res)=> { res.send(`it is working`) })
 app.post("/signin", signin.handleSignin(db, bcrypt));
 app.post('/register', register.handleRegister(db, bcrypt))    
 app.get("/profile/:id", profile.handleProfileGet(db));
@@ -38,6 +38,6 @@ app.put("/image", image.handleImage(db));
 app.post("/imageurl", (req, res) => { image.handleApiCall(req, res)});
 
 
-app.listen(5000, () => {
-  console.log("app is running on port 5000");
+app.listen(process.env.PORT || 5000, () => {
+  console.log(`app is running on port ${process.env.PORT}`);
 });

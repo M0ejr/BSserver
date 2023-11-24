@@ -1,5 +1,3 @@
-const Clarifai = require('clarifai');
-
 const returnClarifaiRequestOptions = (imageUrl) => {
   const PAT = process.env.Clarifai.PAT;
   const USER_ID = "moejr";

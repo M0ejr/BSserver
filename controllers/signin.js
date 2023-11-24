@@ -1,7 +1,7 @@
 const handleSignin = (db, bcrypt) => (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json("incorrect form submission");
+    return res.alert("Wrong email or password!");
   }
   db.select("email", "hash")
     .from("login")
@@ -18,10 +18,10 @@ const handleSignin = (db, bcrypt) => (req, res) => {
           })
           .catch((err) => res.status(400).json("unable to get user"));
       } else {
-        res.status(400).json("wrong credentials");
+        res.alert("Wrong email or password");
       }
     })
-    .catch((err) => res.status(400).json("wrong credentials"));
+    .catch((err) => res.alert("Wrong email or password"));
 };
 
 module.exports = {

@@ -1,7 +1,7 @@
 const Clarifai = require('clarifai');
 
 const returnClarifaiRequestOptions = (imageUrl) => {
-  const PAT = "1688182ed34d4c109fd1258085461dbe";
+  const PAT = process.env.Clarifai.PAT;
   const USER_ID = "moejr";
   const APP_ID = "smartbrain";
   // eslint-disable-next-line

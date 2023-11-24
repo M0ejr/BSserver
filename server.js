@@ -24,13 +24,14 @@ const db = knex({
 const app = express();
 
 const corsOptions = {
-  origin: "https://brainscape-o01p.onrender.com/", // Update with your frontend's URL
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  origin: 'https://brainscape-o01p.onrender.com', // Replace with your Render URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {

@@ -69,7 +69,6 @@
 const express = require('express');
 require('isomorphic-fetch');
 
-
 // Create an Express application
 const app = express();
 app.use(express.json());
@@ -114,7 +113,7 @@ const returnClarifaiRequestOptions = (imageUrl) => {
 };
 
 // Route to handle Clarifai API call
-app.post('/api/call-clarifai', (req, res) => {
+const handleApiCall = (req, res) => {
   const { input } = req.body;
 
   if (!input) {
@@ -138,17 +137,22 @@ app.post('/api/call-clarifai', (req, res) => {
       console.error('Fetch error:', err);
       res.status(400).json('Unable to work with Clarifai API');
     });
-});
+};
 
 // Your handleImage function
 const handleImage = (req, res, db) => {
-    const { id } = req.body;
-    db("users")
-      .where("id", "=", id)
-      .increment("entries", 1)
-      .returning("entries")
-      .then((entries) => {
-        res.json(entries[0].entries);
-      })
-      .catch((err) => res.status(400).json("unable to get entries"));
-  };
+  const { id } = req.body;
+  db("users")
+    .where("id", "=", id)
+    .increment("entries", 1)
+    .returning("entries")
+    .then((entries) => {
+      res.json(entries[0].entries);
+    })
+    .catch((err) => res.status(400).json("unable to get entries"));
+};
+
+module.exports = {
+  handleApiCall,
+  handleImage,
+};

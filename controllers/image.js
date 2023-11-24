@@ -125,7 +125,7 @@ const handleApiCall = (req, res) => {
   fetch(`https://api.clarifai.com/v2/models/${MODEL_ID}/versions/latest/outputs`, clarifaiOptions)
     .then(response => {
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Clarifai API request failed: ' + response.statusText);
       }
       return response.json();
     })
@@ -135,9 +135,10 @@ const handleApiCall = (req, res) => {
     })
     .catch(err => {
       console.error('Fetch error:', err);
-      res.status(400).json('Unable to work with Clarifai API');
+      res.status(500).json('Internal Server Error: ' + err.message);
     });
 };
+
 
 // Your handleImage function
 const handleImage = (req, res, db) => {

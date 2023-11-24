@@ -14,3 +14,5 @@ const handleProfileGet = (db) => (req, res) => {
  module.exports = {
    handleProfileGet
  }
+
+//  export default handleProfileGet;

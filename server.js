@@ -23,7 +23,7 @@ const db = knex({
     port: process.env.POSTGRES_PORT || 5432,
     user: process.env.POSTGRES_USERNAME || 'bs_database_user',
     password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB || 'BrainScape',
+    database: process.env.POSTGRES_DB || 'bs_database',
   }
 });
 

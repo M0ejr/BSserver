@@ -7,24 +7,21 @@ const redisClient = redis.createClient({
   port: process.env.REDIS_PORT || 6379,
 });
 
-
-process.on('exit', () => {
+// Handle cleanup on exit
+const cleanup = () => {
   redisClient.quit();
-});
-
-// Handle other termination signals
-['SIGINT', 'SIGTERM'].forEach(signal => {
-  process.on(signal, () => {
-    redisClient.quit();
-    process.exit();
-  });
-});
+  process.exit();
+};
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  redisClient.quit();
-  process.exit(1);
+  cleanup();
+});
+
+// Handle process exit and termination signals
+['exit', 'SIGINT', 'SIGTERM'].forEach(signal => {
+  process.on(signal, cleanup);
 });
 
 

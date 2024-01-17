@@ -2,7 +2,10 @@ import jwt from 'jsonwebtoken';
 import redis from 'redis';
 
 // setup Redis 
-const redisClient = redis.createClient(process.env.REDIS_URI)
+const redisClient = redis.createClient({
+  host: process.env.REDIS_HOST || 'bsserver_redis_1',
+  port: process.env.REDIS_PORT || 6379,
+});
 
 const handleSignin = (db, bcrypt, req, res) => {
   const { email, password } = req.body;
@@ -32,20 +35,23 @@ const getAuthTokenId = (req, res) => {
   const { authorization } = req.headers;
   return redisClient.get(authorization, (err, reply) => {
     if (err || !reply) {
-      return res.status(400).json('Unauthorized')
+      console.error('Error getting auth token:', err);
+      return res.status(400).json('Unauthorized');
     }
-    return res.json({id: reply})
-  })
-}
+    return res.json({ id: reply });
+  });
+};
+
 
 const signToken = (email) => {
   const jwtPayload = { email };
-  return jwt.sign(jwtPayload, 'JWT_SECRET', { expiresIn: '2 days'});
+  return jwt.sign(jwtPayload, process.env.JWT_SECRET, { expiresIn: '2 days'});
 }
 
 const setToken = (key, value) => {
-  return Promise.resolve(redisClient.set(key, value))
-}
+  return Promise.resolve(redisClient.set(key, value, 'EX', 60 * 60 * 24 * 2)); // Expires in 2 days
+};
+
 
 const createSessions = (user) => {
   // JWT token, return user data

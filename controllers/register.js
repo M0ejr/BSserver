@@ -7,6 +7,7 @@ const handleRegister = (req, res, db, bcrypt) => {
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(password, salt, (err, hash) => {
       if (err) {
+        console.error("Error hashing the password:", err);
         return res.status(500).json("Error hashing the password");
       }
 
@@ -31,8 +32,15 @@ const handleRegister = (req, res, db, bcrypt) => {
               });
           })
           .then(trx.commit)
-          .catch(trx.rollback);
-      }).catch((err) => res.status(400).json("unable to register"));
+          .catch((error) => {
+            console.error("Transaction error:", error);
+            trx.rollback();
+            res.status(400).json("Unable to register");
+          });
+      }).catch((error) => {
+        console.error("Database transaction error:", error);
+        res.status(400).json("Unable to register");
+      });
     });
   });
 };

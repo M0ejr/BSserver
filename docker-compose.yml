@@ -9,6 +9,7 @@ services:
     environment:
       POSTGRES_URI: postgres://m:secret@postgres:5432/BrainScape
       REDIS_URI: redis://redis:6379
+      NODE_OPTIONS: --legacy-watch
     links:
       - postgres
       - redis

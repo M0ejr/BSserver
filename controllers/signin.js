@@ -7,6 +7,27 @@ const redisClient = redis.createClient({
   port: process.env.REDIS_PORT || 6379,
 });
 
+
+process.on('exit', () => {
+  redisClient.quit();
+});
+
+// Handle other termination signals
+['SIGINT', 'SIGTERM'].forEach(signal => {
+  process.on(signal, () => {
+    redisClient.quit();
+    process.exit();
+  });
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  redisClient.quit();
+  process.exit(1);
+});
+
+
 const handleSignin = (db, bcrypt, req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {

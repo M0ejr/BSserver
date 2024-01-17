@@ -75,7 +75,7 @@ const signinAuthentication = (db, bcrypt) => (req, res) => {
   const redisClient = createRedisClient();
 
   const { authorization } = req.headers;
-  return authorization ? getAuthTokenId(req, res) :
+  return authorization ? getAuthTokenId(req, res, redisClient) :
     handleSignin(db, bcrypt, req, res)
       .then(data => {
         return data.id && data.email ? createSessions(data, redisClient) : Promise.reject(data);
@@ -88,4 +88,4 @@ const signinAuthentication = (db, bcrypt) => (req, res) => {
       });
 };
 
-export { handleSignin, signinAuthentication, redisClient };
+export { handleSignin, signinAuthentication, createRedisClient };

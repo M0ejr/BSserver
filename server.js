@@ -9,6 +9,14 @@ import { handleProfileGet, handleProfileUpdate } from "./controllers/profile.js"
 import { handleApiCall, handleImage } from "./controllers/image.js";
 import { requireAuth } from "./controllers/autorization.js";
 
+import redis from 'redis';
+
+const redisClient = redis.createClient({
+  host: process.env.REDIS_HOST || '127.0.0.1',
+  port: process.env.REDIS_PORT || 6379,
+  // ... other Redis options
+});
+
 const db = knex({
   client: "pg",
   connection: process.env.POSTGRES_URI

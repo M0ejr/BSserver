@@ -88,4 +88,4 @@ const signinAuthentication = (db, bcrypt) => (req, res) => {
       });
 };
 
-export { handleSignin, signinAuthentication };
+export { handleSignin, signinAuthentication, redisClient };

@@ -7,7 +7,7 @@ import { handleRegister } from "./controllers/register.js";
 import { signinAuthentication } from "./controllers/signin.js";
 import { handleProfileGet, handleProfileUpdate } from "./controllers/profile.js";
 import { handleApiCall, handleImage } from "./controllers/image.js";
-import { requireAuth } from "./controllers/autorization.js";
+import { requireAuth } from "./controllers/authorization.js";
 
 import redis from 'redis';
 

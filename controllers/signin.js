@@ -33,7 +33,7 @@ const handleSignin = (db, bcrypt, req, res) => {
     .catch((err) => Promise.reject("Wrong email or password"));
 };
 
-const getAuthTokenId = (req, res) => {
+const getAuthTokenId = (req, res, redisClient) => {
   const { authorization } = req.headers;
   return redisClient.get(authorization, (err, reply) => {
     if (err || !reply) {

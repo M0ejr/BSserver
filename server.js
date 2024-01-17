@@ -12,14 +12,19 @@ import { requireAuth } from "./controllers/autorization.js";
 import redis from 'redis';
 
 const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST || 'bsserver_redis_1',
+  host: process.env.REDIS_HOST || 'redis',
   port: process.env.REDIS_PORT || 6379,
-  // ... other Redis options
 });
 
 const db = knex({
   client: "pg",
-  connection: process.env.POSTGRES_URI
+  connection: {
+    host: process.env.POSTGRES_HOST || 'dpg-cmjvnv6n7f5s73cg7mig-a',
+    port: process.env.POSTGRES_PORT || 5432,
+    user: process.env.POSTGRES_USERNAME || 'bs_database_user',
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB || 'BrainScape',
+  }
 });
 
 const app = express();
@@ -45,8 +50,8 @@ app.post("/imageurl", requireAuth, (req, res) => {
   handleApiCall(req, res);
 });
 
+const PORT = process.env.PORT || 3000;
 
-
-app.listen(3000, () => {
-  console.log(`App is running on port 3000`);
+app.listen(PORT, () => {
+  console.log(`App is running on port ${PORT}`);
 });

@@ -9,28 +9,33 @@ import { handleProfileGet, handleProfileUpdate } from "./controllers/profile.js"
 import { handleApiCall, handleImage } from "./controllers/image.js";
 import { requireAuth } from "./controllers/authorization.js";
 
-import redis from 'redis';
 
-const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST || 'redis',
-  port: process.env.REDIS_PORT || 6379,
-});
 
 const db = knex({
   client: "pg",
   connection: {
-    host: process.env.POSTGRES_HOST || 'dpg-cmjvnv6n7f5s73cg7mig-a',
-    port: process.env.POSTGRES_PORT || 5432,
-    user: process.env.POSTGRES_USERNAME || 'bs_database_user',
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    user: process.env.POSTGRES_USERNAME,
     password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB || 'bs_database',
+    database: process.env.POSTGRES_DB,
   }
 });
 
 const app = express();
 
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.send("it's working");

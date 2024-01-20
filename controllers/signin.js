@@ -3,17 +3,21 @@ import redis from 'redis';
 
 // Setup Redis 
 const redisClient = redis.createClient({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT,
-  url:  process.env.REDIS_URL,
+  url: process.env.REDIS_EXTERNAL_URL,
   legacyMode: true
 });
 
-async function redisConnect() {
-  return await redisClient.connect();
- }
- 
-redisConnect()
+
+redisClient.on('connect', () => {
+  console.log('Connected to Redis');
+});
+
+redisClient.on('error', (err) => {
+  console.error(`Error connecting to Redis: ${err}`);
+  console.error(`REDIS_URL: ${process.env.REDIS_EXTERNAL_URL}`);
+});
+
+
 
 const signToken = (username) => {
   const jwtPayload = { username };

@@ -20,7 +20,7 @@ const db = knex({
   }
 });
 
-const whitelist = ['https://brain-scape.vercel.app/'];
+const whitelist = ['https://brain-scape.vercel.app'];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -30,11 +30,8 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  optionsSuccessStatus: 204,
   credentials: true, // Enable credentials (cookies, authorization headers, etc.)
 };
-
 
 const app = express();
 

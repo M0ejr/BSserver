@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import cors from "cors";
 import knex from "knex";
 
+// controllers imports
 import { handleRegister } from "./controllers/register.js";
 import { signinAuthentication } from "./controllers/signin.js";
 import { handleProfileGet, handleProfileUpdate } from "./controllers/profile.js";
@@ -30,7 +31,7 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // Enable credentials (cookies, authorization headers, etc.)
+  credentials: true,
 };
 
 const app = express();

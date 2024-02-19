@@ -6,7 +6,10 @@ import knex from "knex";
 // controllers imports
 import { handleRegister } from "./controllers/register.js";
 import { signinAuthentication } from "./controllers/signin.js";
-import { handleProfileGet, handleProfileUpdate } from "./controllers/profile.js";
+import {
+  handleProfileGet,
+  handleProfileUpdate,
+} from "./controllers/profile.js";
 import { handleApiCall, handleImage } from "./controllers/image.js";
 import { requireAuth } from "./controllers/authorization.js";
 
@@ -18,17 +21,17 @@ const db = knex({
     user: process.env.POSTGRES_USERNAME,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
-  }
+  },
 });
 
-const whitelist = ['https://brain-scape.vercel.app'];
+const whitelist = ["https://brain-scape.vercel.app"];
 
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
@@ -53,7 +56,7 @@ app.get("/profile/:id", requireAuth, (req, res) => {
   handleProfileGet(req, res, db);
 });
 
-app.post('/profile/:id', requireAuth, (req, res) => {
+app.post("/profile/:id", requireAuth, (req, res) => {
   handleProfileUpdate(req, res, db);
 });
 

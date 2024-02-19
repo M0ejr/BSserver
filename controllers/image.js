@@ -1,7 +1,7 @@
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
 
 export const returnClarifaiRequestOptions = (imageUrl) => {
-  const PAT = process.env.CLARIFAI_PAT
+  const PAT = process.env.CLARIFAI_PAT;
   const USER_ID = "moejr";
   const APP_ID = "smartbrain";
   const MODEL_ID = "face-detection";
